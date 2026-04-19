@@ -7,11 +7,12 @@
     ansible.builtin.dnf:
       name: ansible
       state: present
-  - name: verify ansible installed version
+      
+  - name: Verify Ansible installed version
     ansible.builtin.command: ansible --version
     register: ansible_version
 
-  - name: show print of anible version
+  - name: Show Ansible version
     ansible.builtin.debug:
       msg: "{{ ansible_version.stdout }}"
 
