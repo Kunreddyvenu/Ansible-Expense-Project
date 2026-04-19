@@ -31,11 +31,11 @@
   # Step 4 check DB connecttion like try to login and check it is allowing
   - name: check DB connection
     community.mysql.mysql_info:
-      username: root
-      password: "{{root_password}}"
-      host: "{{host}}"
+      login_user: root
+      login_password: "{{root_password}}"
+      login_host: "{{host}}"
       filter: version
-      ignore_errors: yes
+    ignore_errors: yes
     register: mysql_connection_output
 
   # Step 5 print output 
