@@ -13,6 +13,6 @@
 
   - name: show print of anible version
     ansible.builtin.debug:
-      msg: "{{ansible_version.stdout}}"
+      msg: "{{ ansible_version.stdout }}"
 
 
