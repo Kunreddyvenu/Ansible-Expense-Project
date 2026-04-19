@@ -1,0 +1,94 @@
+# target host
+# create vars with host and password
+# tasks 
+# disable default nodjs
+# enable nodejs 20 version
+# install node js and mysql (mysql client)
+# create user
+# create app directory
+# donwload backend code in tmp directory
+# unzip backend code destination /app directoy
+# inssall npm dependencies 
+# copy backend.service
+# install python mysql dependencies
+# import data into mysql
+# reload daemon
+# start and enable backend service 
+- name : configure backend server
+  hosts: [backend]
+  become: yes
+  vars:
+    login_host: 172.31.18.87
+    login_password: ExpenseApp@1
+  tasks:
+  - name : disbale default nodejs
+    ansible.builtin.command: dnf module disable nodejs -y
+
+  - name: enable nodejs:20
+    ansible.builtin.command: dnf module enable nodejs:20 -y
+
+  - name: install node js
+    ansible.builtin.dnf:
+      name: "{{ item }}"
+      state: installed
+    loop:
+      - nodejs
+      - mysql
+  - name: create user in backend 
+    ansible.builtin.user:
+      name : expence
+      state: present
+  - name: create app directoy 
+    ansible.builtin.file:
+      path : /app
+      state: directory
+  - name: donwload backend code
+    ansible.builtin.get_url:
+      url: https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
+      tmp: /tmp/backend.zip
+  - name: unzip backend.code to /app directly 
+    ansible.builtin.unarchive:
+      src: /tmp/backend.zip
+      dest: /app
+      remote_src: yes
+  - name: Install Node.js dependencies
+    ansible.builtin.command: npm install
+    args:
+      chdir: /app
+  - name: copy backend service in app directly 
+    ansible.builtin.copy:
+      src: backend.service
+      dest: /etc/systemd/system/backend.service
+  - name: install mysql and python dependencies
+    ansible.builtin.pip:
+      name:
+      - PyMySQL
+      - cryptography
+      executable: pip3.9
+  - name: Import data into MySQL
+    community.mysql.mysql_db:
+      login_user: root
+      login_password: "{{ login_password }}"
+      login_host: "{{ login_host }}"
+      target: /app/schema/backend.sql
+      state: import
+      name: all
+  - name: system daemon reload 
+    ansible.builtin.systemd_service:
+      daemon_reload: true 
+  - name: start and enable backend service
+    ansible.builtin.service:
+      name: backend
+      state: started
+      enabled: yes        
+
+
+           
+
+
+
+
+
+
+
+
