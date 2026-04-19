@@ -1,58 +1,45 @@
-# Install DB server
-- name: install DB server
+- name : install DB server
   hosts: [db]
   become: yes
   vars:
     host: 172.31.18.87
   vars_prompt:
-    name: root_password
-    prompt: please enter root passwrod 
+    name: mysql_root_password
+    prompt: Please enter mysql server root password 
     private: no
   tasks:
-  # Step 1 install MYSQL server
-  - name: install MYSQL server
+  # Step 1 Install MYSQL server
+  - name : Install MYSQL server
     ansible.builtin.dnf:
       name: mysql-server
-      state: latest
-  # Step 2 start and enable mysql service
-  - name: start and enable mysql service
+      state: installed
+  # Step 2 start and enable mysql server
+  - name : start and enabled mysql server
     ansible.builtin.service:
       name: mysqld
       state: started
       enabled: yes
-  # Step 3 install mysql dependencies
-  - name: install MYSQL dependencies 
+  # Step 3 Install MYSQL Dependencies
+  - name : install MYSQL dependencies
     ansible.builtin.pip:
      name:
-     - PyMySQL
-     - cryptography
-     executable: pip3.9
-
-  # Step 4 check DB connecttion like try to login and check it is allowing
-  - name: check DB connection
+      - PyMySQL
+      - cryptography
+  # Step 4 check DB connection wehter root password is already set
+  - name : check DB connection
     community.mysql.mysql_info:
       login_user: root
-      login_password: "{{root_password}}"
-      login_host: "{{host}}"
-      filter: version
-    ignore_errors: yes
-    register: mysql_connection_output
-
-  # Step 5 print output 
-  - name: print DB output
+      login_password: "{{ mysql_root_password }}"
+      login_host: "{{ host }}"
+      filter: yes
+      ignore_errors: yes
+      register: mysql_connection_output
+  # Step 5 Print DB connection output
+  - name: DB output print
     ansible.builtin.debug:
       msg: "Output: {{mysql_connection_output}}" 
-
-  # Stpe 6 Setup root password
-  - name : setup mysql root password 
-    ansible.builtin.command: "mysql_secure_installation --set-root-pass {{ root_password }}" 
-    when: mysql_connection_output.failed is true 
-
-
-
-
-
-    
-
-
+  # Step 6 setup root password 
+  - name: setup mysql server root password
+    ansible.builtin.command: "mysql_secure_installation --set-root-pass {{mysql_root_password}}"        
+    when: mysql_connection_output.failed is true
 
