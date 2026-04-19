@@ -19,7 +19,7 @@
   become: yes
   vars:
     login_host: 172.31.18.87
-    login_password: ExpenseApp@1
+    login_password: Root@321
   tasks:
   - name : disbale default nodejs
     ansible.builtin.command: dnf module disable nodejs -y
