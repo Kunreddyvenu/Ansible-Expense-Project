@@ -2,7 +2,7 @@
   hosts: [db]
   become: yes
   vars:
-    host: 172.31.18.87
+    host: 172.31.68.107
   vars_prompt:
     name: mysql_root_password
     prompt: Please enter mysql server root password 
