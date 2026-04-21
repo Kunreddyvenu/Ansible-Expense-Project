@@ -30,7 +30,7 @@
       dest: /tmp/backend.zip
   - name : unzip source code to /app
     ansible.builtin.unarchive:
-      source: /tmp/backend.zip
+      src: /tmp/backend.zip
       dest: /app
       remote_src: yes
   - name: install nodejs dependencies
