@@ -42,7 +42,7 @@
       src: backend.service
       dest: /etc/systemd/system/backend.service
   - name: install mysql and python dependencies 
-    ansible.builtin.dnf:
+    ansible.builtin.pip:
      name:
       - PyMySQL
       - Cryptography
