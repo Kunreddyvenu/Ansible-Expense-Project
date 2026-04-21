@@ -20,8 +20,8 @@
   - name: install python and mysql dependencies
     ansible.builtin.pip:
       name:
-       -PyMYSQL
-       -Cryptography
+       - PyMYSQL
+       - Cryptography
 
   - name: check DB connection
     community.mysql.mysql_info:
