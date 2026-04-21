@@ -17,7 +17,7 @@
       - nodejs
       - mysql  
   - name: create app directory
-    ansible.built.file:  
+    ansible.builtin.file:  
      path: /app
      state: directory
   - name: create user
