@@ -43,10 +43,10 @@
       dest: /etc/systemd/system/backend.service
   - name: install mysql and python dependencies 
     ansible.builtin.pip:
-     name:
+      name:
       - PyMySQL
-      - Cryptography
-    executbale: pip3.9 
+      - cryptography
+      executbale: pip3.9 
   - name: import all DB data into backend
     community.mysql.mysql_db: 
       login_user: root
