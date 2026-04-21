@@ -1,4 +1,9 @@
 # Mistakes 
+# 1 you have given worng name in vars_promot name ""
+# 2 you have not given space between depedencies name and (-) symbol
+# 3 in DB connection output ignore errors and registers should be in Playlist column
+# 4 typo error at printout (connection)
+# 5 most of the mistakes are space and typo 
 
 - name: configure DB server
   hosts: [db]
